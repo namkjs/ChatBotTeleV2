@@ -8,7 +8,7 @@ class dtb:
     my_table = Table('user3', metadata,
                      Column('id', Integer, primary_key=True),
                      Column('username', String(20)),
-                     Column('password', String(20)),
+                     Column('password', String(255)),
                      Column('balance', Integer, default=0)
                      )
     # create table
@@ -30,10 +30,14 @@ class dtb:
         result = session.query(self.my_table).all()
         return result
 
+    def query_balance_data(self, usn):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        result = session.query(self.my_table).filter_by(username=usn).first()
+        return result
+
     def update_data(self, usn, money, bal):
         money = int(bal) + int(money)
-        print(">>>", money)
-        print(">>>>", usn)
 
     # Create an update statement that increases the salary by 1000 for rows where age > 30
         conn = engine.connect()
@@ -42,8 +46,13 @@ class dtb:
             .where(self.my_table.c.username == usn)
             .values(balance=money)
         )
-        with engine.connect() as conn:
-            conn.execute(stmt)
+        conn.execute(stmt)
+        conn.commit()
+
+    def send(self, usn, rcv, rcv_money, usn_money, money):
+        temp = -int(money)
+        self.update_data(usn, temp, usn_money)
+        self.update_data(rcv, money, rcv_money)
 
 
 database = dtb()

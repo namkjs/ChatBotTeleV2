@@ -1,3 +1,4 @@
+from passlib.hash import bcrypt
 from bot import database
 from telegram.ext import *
 from telegram import *
@@ -39,7 +40,7 @@ async def success_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     result = database.query_data()
     a = int(0)
     for result in result:
-        if (context.user_data["username"] == result[1] and context.user_data["password"] == result[2]):
+        if (context.user_data["username"] == result[1] and bcrypt.verify(context.user_data["password"], result[2])):
             a = a+1
             break
     if (a == 1):
