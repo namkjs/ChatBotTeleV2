@@ -16,7 +16,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         "Chuong trinh vi dien tu cung Nam Le\n"
         "Lua chon cua ban: ",
         reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard, resize_keyboard=True, one_time_keyboard=True, input_field_placeholder="Dang nhap"
+            reply_keyboard, resize_keyboard=True, one_time_keyboard=True
         ),
     )
     return choice
@@ -27,11 +27,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def register_or_login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     text = update.message.text
     if text == "Đăng nhập":
-        await update.message.reply_text("Username: ")
-        return password_signin
+        await update.message.reply_text("Nhập mật khẩu: ")
+        return success_login
     elif text == "Đăng ký":
-        await update.message.reply_text("Username: ")
-        return password_register
+        await update.message.reply_text("Nhập mật khẩu: ")
+        return success
     else:
         await update.message.reply_text("Da huy")
         return ConversationHandler.END

@@ -1,4 +1,5 @@
 from sqlalchemy import *
+import sqlalchemy as sa
 from sqlalchemy.orm import sessionmaker
 engine = create_engine('mysql+pymysql://root:123456@localhost:3307/Chatbot')
 
@@ -9,7 +10,8 @@ class dtb:
                      Column('id', Integer, primary_key=True),
                      Column('username', String(20)),
                      Column('password', String(255)),
-                     Column('balance', Integer, default=0)
+                     Column('balance', Integer, default=0),
+                     Column('salt', String(256))
                      )
     # create table
 
@@ -17,10 +19,11 @@ class dtb:
         self.metadata.create_all(engine)
 
     # insert_user_into_table
-    def insert_user(self, usn, passw):
+    def insert_user(self, usn, passw, salt):
+        print("Check salt: ", salt)
         conn = engine.connect()
         conn.execute(self.my_table.insert().values(
-            username=usn, password=passw))
+            username=usn, password=passw, salt=salt))
         conn.commit()
 
     # query data
@@ -38,7 +41,7 @@ class dtb:
 
     def update_data(self, usn, money, bal):
         money = int(bal) + int(money)
-
+        print(">> check rcv money", bal)
     # Create an update statement that increases the salary by 1000 for rows where age > 30
         conn = engine.connect()
         stmt = (
@@ -51,8 +54,9 @@ class dtb:
 
     def send(self, usn, rcv, rcv_money, usn_money, money):
         temp = -int(money)
-        self.update_data(usn, temp, usn_money)
+        print("Check money", money)
         self.update_data(rcv, money, rcv_money)
+        self.update_data(usn, temp, usn_money)
 
 
 database = dtb()
