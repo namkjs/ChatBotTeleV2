@@ -1,3 +1,4 @@
+
 from telegram.ext import *
 from telegram import *
 import logging
@@ -7,12 +8,10 @@ from dotenv import load_dotenv
 
 #import file
 import handlers.ConversationHandler as handlers
-from utils.database import dtb
+from utils.database import *
 database = dtb()
 
-
 load_dotenv()
-
 # Start recording information about memory usage
 tracemalloc.start()
 

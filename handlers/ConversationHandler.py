@@ -14,15 +14,19 @@ def ewallet():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("ewallet", start)],
         states={
-            choice: [MessageHandler(filters.TEXT, register_or_login)],
-            username_signin: [MessageHandler(filters.TEXT, usern)],
-            password_signin: [MessageHandler(filters.TEXT, password)],
+            choice: [MessageHandler(filters.Regex("^(Đăng nhập|Đăng ký|Hủy)$"), register_or_login)],
+            # username_signin: [MessageHandler(filters.TEXT, usern)],
+            # password_signin: [MessageHandler(filters.TEXT, password)],
             success_login: [MessageHandler(filters.TEXT, success_log)],
-            password_register: [MessageHandler(filters.TEXT, password_regis)],
+            # password_register: [MessageHandler(filters.TEXT, password_regis)],
             success: [MessageHandler(filters.TEXT, sucess_def)],
             main_menu: [MessageHandler(filters.TEXT, mainmenu)],
             user_choice: [MessageHandler(filters.TEXT, select_function)],
             put_money: [MessageHandler(filters.TEXT, putmoney)],
+            # update_money: [MessageHandler(filters.TEXT, updatemoney)],
+            confirmsend: [MessageHandler(filters.TEXT, confirm)],
+            send_money: [MessageHandler(filters.TEXT, sendmoney)],
+            # transaction: [MessageHandler(filters.TEXT, trans)],
         },
         fallbacks=[CommandHandler("Cancel", cancel)],
     )
