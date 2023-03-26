@@ -26,14 +26,14 @@ async def success_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
             a = a+1
             break
     if (a == 1):
-        button1 = KeyboardButton('Nạp tiền')
-        button2 = KeyboardButton('Cập nhật số dư')
-        button3 = KeyboardButton('Chuyển tiền')
-        button4 = KeyboardButton('Lịch sử giao dịch')
+        button1 = KeyboardButton('Nạp tiền '+u'🤑')
+        button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
+        button3 = KeyboardButton('Chuyển tiền ' + u'📤')
+        button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
 
 # create KeyboardButton objects for each line
 
-        reply_keyboard = [[button1, button2, button3, button4]]
+        reply_keyboard = [[button1], [button2], [button3], [button4]]
         await update.message.reply_text("Dang nhap thanh cong!"
                                         "Chao mung den vi dien tu cua Nam Le. Nhap lua chon cua ban: ",
                                         reply_markup=ReplyKeyboardMarkup(

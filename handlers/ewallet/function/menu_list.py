@@ -15,7 +15,7 @@ async def mainmenu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     button2 = KeyboardButton('Cập nhật số dư')
     button3 = KeyboardButton('Chuyển tiền')
     button4 = KeyboardButton('Lịch sử giao dịch')
-    reply_keyboard = [[button1, button2, button3, button4]]
+    reply_keyboard = [[button1], [button2], [button3], [button4]]
 
     await update.message.reply_text(
         "Chao mung den vi dien tu cua Nam Le. Nhap lua chon cua ban: ",
