@@ -2,7 +2,7 @@ from sqlalchemy import *
 import sqlalchemy as sa
 from sqlalchemy.orm import sessionmaker
 engine = create_engine(
-    'mysql://bb786fcaa29898:931ea44f@us-cdbr-east-06.cleardb.net/heroku_a5cf45e366fd580?reconnect=true')
+    'mysql+pymysql://bb786fcaa29898:931ea44f@us-cdbr-east-06.cleardb.net/heroku_a5cf45e366fd580?reconnect=true')
 
 
 class dtb:
@@ -49,6 +49,16 @@ class dtb:
             update(self.my_table)
             .where(self.my_table.c.username == usn)
             .values(balance=money)
+        )
+        conn.execute(stmt)
+        conn.commit()
+
+    def update_pass(self, usn, passw):
+        conn = engine.connect()
+        stmt = (
+            update(self.my_table)
+            .where(self.my_table.c.username == usn)
+            .values(password=passw)
         )
         conn.execute(stmt)
         conn.commit()

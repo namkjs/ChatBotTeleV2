@@ -27,6 +27,8 @@ def ewallet():
             confirmsend: [MessageHandler(filters.TEXT, confirm)],
             send_money: [MessageHandler(filters.TEXT, sendmoney)],
             # transaction: [MessageHandler(filters.TEXT, trans)],
+            setting: [MessageHandler(filters.TEXT, set_up)],
+            changepassword: [MessageHandler(filters.TEXT, change_password)],
         },
         fallbacks=[CommandHandler("Cancel", cancel)],
     )
