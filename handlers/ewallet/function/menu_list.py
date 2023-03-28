@@ -17,6 +17,10 @@ async def mainmenu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     button2 = KeyboardButton('Cập nhật số dư 💳')
     button3 = KeyboardButton('Chuyển tiền 📤')
     button4 = KeyboardButton('Lịch sử giao dịch 📊')
+    button1 = KeyboardButton('Nạp tiền')
+    button2 = KeyboardButton('Cập nhật số dư')
+    button3 = KeyboardButton('Chuyển tiền')
+    button4 = KeyboardButton('Lịch sử giao dịch')
     reply_keyboard = [[button1], [button2], [button3], [button4]]
 
     await update.message.reply_text(
