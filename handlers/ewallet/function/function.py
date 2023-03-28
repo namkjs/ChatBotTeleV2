@@ -4,8 +4,9 @@ from telegram import *
 import logging
 import tracemalloc
 import sys
-
+from datetime import datetime
 from ..variable import *
+from utils.transaction import *
 sys.path.append('...')
 logger = logging.getLogger(__name__)
 
@@ -21,81 +22,122 @@ async def putmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     database.update_data(
         context.user_data["username"], context.user_data["money"], balance)
     await update.message.reply_text("Nap tien thanh cong")
-    return main_menu
+    return user_choice
 
 
-# async def updatemoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     mycursor = mydb.cursor()
+async def updatemoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    result = database.query_balance_data(context.user_data["username"])
+    balance = result[3]
+    await update.message.reply_text(f"So du tai khoan cua ban hien tai la: {balance}")
+    return user_choice
 
-#     sql = "SELECT tien FROM user2 WHERE username = %s"
-#     val = (context.user_data["username"],)
-
-#     # val = val.split()
-#     mycursor.execute(sql, val)
-
-#     myresult = mycursor.fetchone()
-#     print(myresult)
-#     # myresult = int(myresult[0])
-#     await update.message.reply_text(f"So du tai khoan cua ban hien tai la: {myresult[0]}")
-#     return main_menu
-
-# user_money = int()
-# receiver_money = int()
-# value = str()
+user_money = int()
+receiver_money = int()
+value = str()
+receiver = str()
 
 
-# async def sendmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     mycursor = mydb.cursor()
+async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global receiver
+    receiver = update.message.text
+    results = database.query_data()
+    button1 = KeyboardButton('10000')
+    button2 = KeyboardButton('20000')
+    button3 = KeyboardButton('50000')
+    button4 = KeyboardButton('100000')
+    button5 = KeyboardButton('200000')
+    button6 = KeyboardButton('500000')
+    reply_keyboard = [[button1, button2], [
+        button3, button4], [button5, button6]]
+    a = int(0)
+    for result in results:
+        if receiver == result[1]:
+            global receiver_money
+            receiver_money = result[3]
+            a = a+1
+            break
+    if a > 0:
+        await update.message.reply_text("Nhập số tiền muốn chuyển: ",
+                                        reply_markup=ReplyKeyboardMarkup(
+                                            reply_keyboard, resize_keyboard=True, one_time_keyboard=True, selective=True
+                                        ),
+                                        )
+        return send_money
+    else:
+        await update.message.reply_text("Ten nguoi dung khong hop le! Vui long nhap lai ten dang nhap: ")
+        return confirmsend
 
-#     sql = "SELECT tien FROM user2 WHERE username = %s"
-#     val = (context.user_data["username"],)
 
-#     # val = val.split()
-#     mycursor.execute(sql, val)
+async def sendmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    result = database.query_balance_data(context.user_data["username"])
+    balance = result[3]
+    money = int(update.message.text)
+    if money < 0:
+        await update.message.reply_text("Loi vui long thuc hien lai! ")
+        return confirmsend
+    elif money > balance:
+        await update.message.reply_text("So du khong kha dung")
+        return confirmsend
+    else:
+        global receiver
+        database.send(context.user_data["username"], receiver,
+                      receiver_money, balance, money)
+        current_time = datetime.now()
+        trans = str(str(current_time) + ": " + str(-money))
+        trans_receive = str(str(current_time) + ": +" + str(money))
+        print(">>> check trans: ", trans)
+        user_database = dtb1(str(context.user_data["username"]))
+        user_database.insert_user(trans)
 
-#     myresult = mycursor.fetchone()
-#     global user_money
-#     user_money = int(myresult[0])
+        user_database1 = dtb1(receiver)
+        user_database1.insert_user(trans_receive)
+        button1 = KeyboardButton(
+            'Nạp tiền ' + u'🤑')
+        button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
+        button3 = KeyboardButton('Chuyển tiền ' + u'📤')
+        button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
+        button5 = KeyboardButton('Cài đặt ⚙️')
+# create KeyboardButton objects for each line
 
-#     print(myresult[0])
-#     context.user_data["receiver"] = str(update.message.text,)
-#     val = (context.user_data["receiver"],)
-#     mycursor.execute(sql, val)
-#     myresult = mycursor.fetchone()
-#     global receiver_money
-#     receiver_money = int(myresult[0])
-#     print(">>> checking money user", user_money,
-#           ">> checking receiver money", receiver_money)
-#     await update.message.reply_text("Nhap so tien can chuyen: ")
-
-#     # myresult = int(myresult[0])
-#     return confirmsend
+        reply_keyboard = [[button1], [button2],
+                          [button3], [button4], [button5]]
+        await update.message.reply_text("Chuyển tiền thành công!",
+                                        reply_markup=ReplyKeyboardMarkup(
+                                            reply_keyboard, resize_keyboard=True, one_time_keyboard=True, selective=True
+                                        ),
+                                        )
+        return user_choice
 
 
-# async def confirm_sendmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     money = int(update.message.text)
-#     global user_money
-#     global receiver_money
-#     print(">>> checking money send", money,
-#           "\n>>>> checking money of user", user_money)
-#     user_money = user_money - money
-#     receiver_money = receiver_money + money
-#     receiver_money = int(receiver_money)
-#     print(">>> check receiver_money", receiver_money,
-#           ">>> user_money", user_money)
-#     mycursor = mydb.cursor()
-#     sql = "UPDATE user2 SET tien = %s WHERE username = %s"
-#     val = (user_money,
-#            str(context.user_data["username"]))
+async def trans(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_database = dtb1(str(context.user_data["username"]))
+    results = user_database.query_data()
+    await update.message.reply_text("Lich su giao dich la: ")
+    for result in results:
+        await update.message.reply_text(result[1])
+    return user_choice
 
-#     mycursor.execute(sql, val)
-#     mydb.commit()
-#     mycursor = mydb.cursor()
-#     global value
-#     print("<<<", receiver_money)
-#     value = context.user_data["receiver"]
-#     val = (receiver_money, str(value))
-#     mycursor.execute(sql, val)
-#     mydb.commit()
-#     await update.message.reply_text("Chuyen tien thanh cong!")
-#     return main_menu
+# async def hist(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+
+async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    if (text == 'Đổi mật khẩu'):
+        await update.message.reply_text('Nhập mật khẩu mới: ')
+        return changepassword
+    if (text == 'Đăng xuất'):
+        await update.message.reply_text("Đăng xuất thành công. Chúc bạn một ngày vui vẻ")
+        return ConversationHandler.END
+
+
+async def change_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    result = database.query_data()
+    a = int(0)
+    for result in result:
+        if (context.user_data["username"] == result[1]):
+            password = str(result[4])+text+str(result[4])
+            break
+    database.update_pass(context.user_data['username'], password)
+    await update.message.reply_text("Đổi mật khẩu thành công.")
+    return user_choice
