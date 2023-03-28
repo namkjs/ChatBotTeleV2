@@ -2,7 +2,7 @@ from sqlalchemy import *
 import sqlalchemy as sa
 from sqlalchemy.orm import sessionmaker
 engine = create_engine(
-    'mysql+pymysql://bb786fcaa29898:931ea44f@us-cdbr-east-06.cleardb.net/heroku_a5cf45e366fd580?reconnect=true')
+    'mysql+pymysql://root:123456@localhost:3307/Chatbot')
 
 
 class dtb:
@@ -53,7 +53,6 @@ class dtb:
         conn.execute(stmt)
         conn.commit()
 
-<<<<<<< HEAD
     def update_pass(self, usn, passw):
         conn = engine.connect()
         stmt = (
@@ -64,8 +63,6 @@ class dtb:
         conn.execute(stmt)
         conn.commit()
 
-=======
->>>>>>> 32953b8abb8ad28da45e157a1f338f3a9103527b
     def send(self, usn, rcv, rcv_money, usn_money, money):
         temp = -int(money)
         print("Check money", money)

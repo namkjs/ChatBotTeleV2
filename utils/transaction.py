@@ -1,7 +1,9 @@
 from sqlalchemy import *
 from passlib.hash import bcrypt
 from sqlalchemy.orm import sessionmaker
-engine = create_engine('mysql+pymysql://root:123456@localhost:3307/Chatbot')
+
+engine = create_engine(
+    'mysql+pymysql://root:123456@localhost:3307/Chatbot')
 
 
 class dtb1:
