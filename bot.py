@@ -11,7 +11,7 @@ from flask import Flask
 import handlers.ConversationHandler as handlers
 from utils.database import *
 database = dtb()
-PORT = int(os.environ.get('PORT', '8443'))
+PORT = int(os.environ.get('PORT', '3306'))
 load_dotenv()
 # Start recording information about memory usage
 tracemalloc.start()
@@ -30,8 +30,12 @@ def main() -> None:
 
     application.add_handler(handlers.ewallet())
 
-    application.bot.setWebhook(
-        'https://telegrambot123.herokuapp.com/6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie')
+    application.start_webhook(
+        listen="0.0.0.0",
+        port=int(PORT),
+        url_path='6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie',
+        webhook_url='https://telegrambot123.herokuapp.com/6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie'
+    )
 
 
 if __name__ == "__main__":
