@@ -31,7 +31,8 @@ def main() -> None:
     application.start_webhook(listen="0.0.0.0",
                               port=int(os.environ.get('PORT', 5000)),
                               url_path=os.getenv("API_TELE_KEY"),
-                              webhook_url=+ os.getenv("API_TELE_KEY")
+                              webhook_url='https://telegrambot123.herokuapp.com/' +
+                              os.getenv("API_TELE_KEY")
                               )
 
 
