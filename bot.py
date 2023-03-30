@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from flask import Flask
-#import file
+# import file
 import handlers.ConversationHandler as handlers
 from utils.database import *
 database = dtb()
@@ -25,7 +25,8 @@ logger = logging.getLogger(__name__)
 
 def main() -> None:
     """Run the bot."""
-    application = Application.builder().token(os.getenv("API_TELE_KEY")).build()
+    application = Application.builder().token(
+        '6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie').build()
 
     application.add_handler(handlers.ewallet())
 
