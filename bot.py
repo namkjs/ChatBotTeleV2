@@ -36,6 +36,7 @@ def main() -> None:
         url_path='6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie',
         webhook_url='https://telegrambot123.herokuapp.com/6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie'
     )
+    application.idle()
 
 
 if __name__ == "__main__":
