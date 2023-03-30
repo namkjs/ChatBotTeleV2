@@ -25,12 +25,12 @@ logger = logging.getLogger(__name__)
 
 def main() -> None:
     """Run the bot."""
-    application = Application.builder().token(
+    application = ApplicationBuilder.updater().token(
         '6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie').build()
 
     application.add_handler(handlers.ewallet())
 
-    application.start_webhook(
+    application.run_webhook(
         listen="0.0.0.0",
         port=int(PORT),
         url_path='6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie',
