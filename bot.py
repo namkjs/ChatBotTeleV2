@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 def main() -> None:
     """Run the bot."""
-    application = ApplicationBuilder.token(
+    application = Application.builder().token(
         '6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuie').build()
 
     application.add_handler(handlers.ewallet())
