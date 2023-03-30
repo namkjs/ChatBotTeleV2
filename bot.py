@@ -31,9 +31,8 @@ def main() -> None:
     application.start_webhook(
         listen="0.0.0.0",
         port=int(PORT),
-        url_path="6040924293: AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuiec ",
-        webhook_url='https://telegrambot123.herokuapp.com/' +
-        '6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuiec'
+        url_path="6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuiec ",
+        webhook_url='https://telegrambot123.herokuapp.com/6040924293:AAEW1ot_lAxltrZ8-F0WDnKHkDMPwlYuiec'
     )
 
 
