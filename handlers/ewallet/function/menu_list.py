@@ -56,7 +56,8 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     elif text == 'Cài đặt ⚙️':
         button1 = KeyboardButton('Đổi mật khẩu')
         button2 = KeyboardButton('Đăng xuất')
-        reply_keyboard = [[button1], [button2]]
+        button3 = KeyboardButton('Quay lại')
+        reply_keyboard = [[button1], [button3], [button2]]
         await update.message.reply_text('Thực hiện cài đặt tài khoản. Nhập lựa chọn: ', reply_markup=ReplyKeyboardMarkup(
             reply_keyboard, resize_keyboard=False, one_time_keyboard=True))
         return setting

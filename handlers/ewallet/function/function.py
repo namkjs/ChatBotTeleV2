@@ -13,16 +13,18 @@ logger = logging.getLogger(__name__)
 
 async def putmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
-    context.user_data["money"] = update.message.text
-    result = database.query_data()
-    balance = int()
-    for result in result:
+    money = int(update.message.text)
+    if money < 0:
+        await update.message.reply_text("Số tiền không hợp lệ vui lòng nhập lại số tiền: ")
+        return put_money
+    else:
+        context.user_data["money"] = update.message.text
+        result = database.query_balance_data(context.user_data["username"])
         balance = int(result[3])
-    print(balance)
-    database.update_data(
-        context.user_data["username"], context.user_data["money"], balance)
-    await update.message.reply_text("Nap tien thanh cong")
-    return user_choice
+        database.update_data(
+            context.user_data["username"], context.user_data["money"], balance)
+        await update.message.reply_text("Nap tien thanh cong")
+        return user_choice
 
 
 async def updatemoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -128,15 +130,32 @@ async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if (text == 'Đăng xuất'):
         await update.message.reply_text("Đăng xuất thành công. Chúc bạn một ngày vui vẻ")
         return ConversationHandler.END
+    if (text == 'Quay lại'):
+        button1 = KeyboardButton(
+            'Nạp tiền ' + u'🤑')
+        button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
+        button3 = KeyboardButton('Chuyển tiền ' + u'📤')
+        button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
+        button5 = KeyboardButton('Cài đặt ⚙️')
+# create KeyboardButton objects for each line
+
+        reply_keyboard = [[button1], [button2],
+                          [button3], [button4], [button5]]
+        await update.message.reply_text('Menu: ', reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard, resize_keyboard=True, one_time_keyboard=True, selective=True
+        ),
+        )
+        return user_choice
 
 
 async def change_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     result = database.query_data()
-    a = int(0)
+
     for result in result:
         if (context.user_data["username"] == result[1]):
-            password = str(result[4])+text+str(result[4])
+            password = bcrypt.hash(result[4] + text +
+                                   result[4])
             break
     database.update_pass(context.user_data['username'], password)
     await update.message.reply_text("Đổi mật khẩu thành công.")
