@@ -4,11 +4,16 @@ from telegram import *
 import logging
 import tracemalloc
 import sys
-from datetime import datetime
+import datetime
 from ..variable import *
 from utils.transaction import *
 sys.path.append('...')
 logger = logging.getLogger(__name__)
+
+user_money = int()
+receiver_money = int()
+value = str()
+receiver = str()
 
 
 async def putmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -32,11 +37,6 @@ async def updatemoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     balance = result[3]
     await update.message.reply_text(f"So du tai khoan cua ban hien tai la: {balance}")
     return user_choice
-
-user_money = int()
-receiver_money = int()
-value = str()
-receiver = str()
 
 
 async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -75,24 +75,38 @@ async def sendmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     balance = result[3]
     money = int(update.message.text)
     if money < 0:
-        await update.message.reply_text("Loi vui long thuc hien lai! ")
+        await update.message.reply_text("Số tiền không hợp lệ. Vui lòng nhập lại số tiền: ")
         return confirmsend
     elif money > balance:
-        await update.message.reply_text("So du khong kha dung")
+        button1 = KeyboardButton(
+            'Nạp tiền ' + u'🤑')
+        button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
+        button3 = KeyboardButton('Chuyển tiền ' + u'📤')
+        button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
+        button5 = KeyboardButton('Cài đặt ⚙️')
+        # create KeyboardButton objects for each line
+
+        reply_keyboard = [[button1], [button2],
+                          [button3], [button4], [button5]]
+        await update.message.reply_text("Số dư trong tài khoản không khả dụng! Vui lòng nạp thêm tiền và thực hiện lại: ", reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard, resize_keyboard=True, one_time_keyboard=True, selective=True
+        ),)
         return confirmsend
     else:
         global receiver
         database.send(context.user_data["username"], receiver,
                       receiver_money, balance, money)
-        current_time = datetime.now()
-        trans = str(str(current_time) + ": " + str(-money))
-        trans_receive = str(str(current_time) + ": +" + str(money))
+        # trans = str(str(current_time) + ": " + str(-money))
+        # trans_receive = str(str(current_time) + ": +" + str(money))
+        day = datetime.datetime.today().strftime('%d-%m-%Y')
+        time = datetime.datetime.today().strftime('%H:%M:%S')
+        fr = context.user_data["username"]
         print(">>> check trans: ", trans)
         user_database = dtb1(str(context.user_data["username"]))
-        user_database.insert_user(trans)
+        user_database.insert_user(day, time, -money, receiver)
 
         user_database1 = dtb1(receiver)
-        user_database1.insert_user(trans_receive)
+        user_database1.insert_user(day, time, money, fr)
         button1 = KeyboardButton(
             'Nạp tiền ' + u'🤑')
         button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
@@ -115,11 +129,10 @@ async def trans(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_database = dtb1(str(context.user_data["username"]))
     results = user_database.query_data()
     await update.message.reply_text("Lich su giao dich la: ")
+    await update.message.reply_text("           Ngày          |             Giờ            |          Tiền         ")
     for result in results:
-        await update.message.reply_text(result[1])
+        await update.message.reply_text(f'      {result[1]}     |       {result[2]}         {result[3]}')
     return user_choice
-
-# async def hist(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):

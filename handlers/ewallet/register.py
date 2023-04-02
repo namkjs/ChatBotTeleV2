@@ -52,13 +52,10 @@ async def sucess_def(update: Update, context: ContextTypes.DEFAULT_TYPE):
     array = []
     for result in results:
         array.append(result[1])
-    print(">>> check result", array, " ",
-          ">>> check context.user_data: ", context.user_data["username"])
     if context.user_data["username"] in array:
         await update.message.reply_text("Tài khoản đã được đăng ký. Vui lòng thực hiện lại lựa chọn của bạn: ")
         return choice
     else:
-        print(">>> check salt in register:", random_string)
         database.insert_user(context.user_data["username"],
                              context.user_data["password"],
                              random_string)

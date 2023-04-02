@@ -50,8 +50,9 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         user_database = dtb1(str(context.user_data["username"]))
         results = user_database.query_data()
         await update.message.reply_text("Lich su giao dich la: ")
+        await update.message.reply_text("           Ngày                |             Giờ            |          Tiền         ")
         for result in results:
-            await update.message.reply_text(result[1])
+            await update.message.reply_text(f'      {result[1]}     |           {result[2]}     |        {result[3]}')
         return user_choice
     elif text == 'Cài đặt ⚙️':
         button1 = KeyboardButton('Đổi mật khẩu')
