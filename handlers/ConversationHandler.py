@@ -1,7 +1,6 @@
 from telegram.ext import *
 import logging
 import tracemalloc
-
 from .ewallet.menu import *
 from .ewallet.cancel import *
 from .ewallet.login import *
@@ -30,8 +29,8 @@ def ewallet():
             # transaction: [MessageHandler(filters.TEXT, trans)],
             setting: [MessageHandler(filters.TEXT & ~filters.COMMAND, set_up)],
             changepassword: [MessageHandler(filters.TEXT & ~filters.COMMAND, change_password)],
-            score: [MessageHandler(filters.TEXT & ~ filters.COMMAND, gift)]
-
+            score: [MessageHandler(filters.TEXT & ~ filters.COMMAND, gift)],
+            change_language: [MessageHandler(filters.TEXT & ~ filters.COMMAND, changelan)],
         },
         fallbacks=[CommandHandler("Cancel", cancel)],
     )

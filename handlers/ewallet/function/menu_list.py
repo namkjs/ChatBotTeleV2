@@ -64,6 +64,7 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     elif text == 'Cài đặt ⚙️':
         button1 = KeyboardButton('Đổi mật khẩu')
         button4 = KeyboardButton('Xem số tài khoản | Mã giới thiệu')
+        button5 = KeyboardButton('Đổi ngôn ngữ')
         button2 = KeyboardButton('Đăng xuất')
         button3 = KeyboardButton('Quay lại')
         reply_keyboard = [[button4], [button1], [button3], [button2]]
@@ -71,7 +72,7 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             reply_keyboard, resize_keyboard=False))
         return setting
     elif text == 'Về chúng tôi':
-        photo_file = open('E:/Chatbot-local/public/images/APOTATO.png', "rb")
+        photo_file = open('E:/Chatbot/public/images/2.png', "rb")
         await update.message.reply_photo(photo_file)
         await update.message.reply_text('A Potato là một bot ví điện tử xử của Telegram được phát triển và làm màu bởi nhóm 4 với CEO Đỗ Hiếu. Để hiểu rõ hơn về chúng tôi, các bạn có thể đọc link sau đây: https://a-potato.notion.site/Hi-u-l-ai-eacb5d50b7aa4fe4a14b7cf231265aa9')
         return user_choice

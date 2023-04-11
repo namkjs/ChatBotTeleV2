@@ -173,7 +173,13 @@ async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_keyboard, resize_keyboard=True, selective=True
         ),)
         return user_choice
-    if (text == 'Quay lại'):
+    elif (text == 'Đổi ngôn ngữ'):
+        language1 = 'Tiếng Việt'
+        language2 = 'English'
+        keyboard = [[language1], [language2]]
+        await update.message.reply_text("Lựa chọn ngôn ngữ muốn đổi", reply_marku=ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True))
+        return change_language
+    elif (text == 'Quay lại'):
         await update.message.reply_text('Menu: ', reply_markup=ReplyKeyboardMarkup(
             reply_keyboard_menu, resize_keyboard=True, selective=True
         ),
@@ -217,4 +223,16 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_keyboard_menu, resize_keyboard=True,  selective=True
         ),
         )
+        return user_choice
+
+
+async def changelan(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    if (text == 'Tiếng Việt'):
+        await update.message.reply_text("Đổi ngôn ngữ thành công! ", reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard_menu, resize_keyboard=True,  selective=True))
+        return user_choice
+    elif (text == 'English'):
+        await update.message.reply_text('Success', reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard_menu, resize_keyboard=True,  selective=True))
         return user_choice
