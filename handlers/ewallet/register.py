@@ -35,6 +35,16 @@ logger = logging.getLogger(__name__)
 #         await update.message.reply_text("Password to register: ")
 #     return success
 
+async def ref_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.text == '/skip' or update.message.text == '/Skip':
+        context.user_data['code'] == 0
+        await update.message.reply_text("Nhập mật khẩu: ")
+        return success_login
+    else:
+        context.user_data['code'] = str(update.message.text)
+        await update.message.reply_text("Mật khẩu: ")
+        return success_login
+
 
 async def sucess_def(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
@@ -61,5 +71,5 @@ async def sucess_def(update: Update, context: ContextTypes.DEFAULT_TYPE):
                              random_string)
     user_database = dtb1(str(context.user_data["username"]))
     user_database.create_table()
-    await update.message.reply_text("Dang ky thanh cong! Nhap lua chon ")
+    await update.message.reply_text("Đăng ký thành công. Nhập lựa chọn: ")
     return choice

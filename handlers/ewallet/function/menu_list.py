@@ -17,10 +17,6 @@ async def mainmenu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     button2 = KeyboardButton('Cập nhật số dư 💳')
     button3 = KeyboardButton('Chuyển tiền 📤')
     button4 = KeyboardButton('Lịch sử giao dịch 📊')
-    button1 = KeyboardButton('Nạp tiền')
-    button2 = KeyboardButton('Cập nhật số dư')
-    button3 = KeyboardButton('Chuyển tiền')
-    button4 = KeyboardButton('Lịch sử giao dịch')
     reply_keyboard = [[button1], [button2], [button3], [button4]]
 
     await update.message.reply_text(
@@ -54,14 +50,31 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         for result in results:
             await update.message.reply_text(f'      {result[1]}     |           {result[2]}     |        {result[3]}')
         return user_choice
+    elif text == 'Đổi quà 🎁':
+        button1 = KeyboardButton('Thẻ điện thoại')
+        button4 = KeyboardButton('Mã giảm giá Coffee')
+        button2 = KeyboardButton('Mã giảm giá Massage')
+        button3 = KeyboardButton('Quay lại')
+        reply_keyboard = [[button1], [button4], [button2], [button3]]
+        results = database.query_balance_data(context.user_data["username"])
+        await update.message.reply_text(f'Điểm thành viên của bạn là: {results[5]}. Thực hiện đổi điểm: ',  reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard, resize_keyboard=False, one_time_keyboard=True))
+        return score
+
     elif text == 'Cài đặt ⚙️':
         button1 = KeyboardButton('Đổi mật khẩu')
+        button4 = KeyboardButton('Xem số tài khoản | Mã giới thiệu')
         button2 = KeyboardButton('Đăng xuất')
         button3 = KeyboardButton('Quay lại')
-        reply_keyboard = [[button1], [button3], [button2]]
+        reply_keyboard = [[button4], [button1], [button3], [button2]]
         await update.message.reply_text('Thực hiện cài đặt tài khoản. Nhập lựa chọn: ', reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard, resize_keyboard=False, one_time_keyboard=True))
+            reply_keyboard, resize_keyboard=False))
         return setting
+    elif text == 'Về chúng tôi':
+        photo_file = open('E:/Chatbot-local/public/images/APOTATO.png', "rb")
+        await update.message.reply_photo(photo_file)
+        await update.message.reply_text('A Potato là một bot ví điện tử xử của Telegram được phát triển và làm màu bởi nhóm 4 với CEO Đỗ Hiếu. Để hiểu rõ hơn về chúng tôi, các bạn có thể đọc link sau đây: https://a-potato.notion.site/Hi-u-l-ai-eacb5d50b7aa4fe4a14b7cf231265aa9')
+        return user_choice
     else:
         await update.message.reply_text("Da huy")
         return ConversationHandler.END

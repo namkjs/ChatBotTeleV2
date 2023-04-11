@@ -14,7 +14,7 @@ class dtb1:
                               Column('Day', String(256)),
                               Column('Time', String(256)),
                               Column('Money', String(256)),
-                              Column('From', String(256))
+                              Column('From', String(256)),
                               )
 
     def create_table(self):

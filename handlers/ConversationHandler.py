@@ -15,6 +15,7 @@ def ewallet():
         entry_points=[CommandHandler("ewallet", start)],
         states={
             choice: [MessageHandler(filters.Regex("^(Đăng nhập|Đăng ký|Hủy)$"), register_or_login)],
+            refcode: [MessageHandler(filters.TEXT & ~filters.COMMAND, ref_code)],
             # username_signin: [MessageHandler(filters.TEXT, usern)],
             # password_signin: [MessageHandler(filters.TEXT, password)],
             success_login: [MessageHandler(filters.TEXT & ~filters.COMMAND, success_log)],
@@ -29,6 +30,8 @@ def ewallet():
             # transaction: [MessageHandler(filters.TEXT, trans)],
             setting: [MessageHandler(filters.TEXT & ~filters.COMMAND, set_up)],
             changepassword: [MessageHandler(filters.TEXT & ~filters.COMMAND, change_password)],
+            score: [MessageHandler(filters.TEXT & ~ filters.COMMAND, gift)]
+
         },
         fallbacks=[CommandHandler("Cancel", cancel)],
     )

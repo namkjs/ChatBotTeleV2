@@ -31,11 +31,13 @@ async def success_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
         button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
         button3 = KeyboardButton('Chuyển tiền ' + u'📤')
         button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
-        button5 = KeyboardButton('Cài đặt ⚙️')
+        button6 = KeyboardButton('Đổi quà ' + u'🎁')
+        button5 = KeyboardButton('Cài đặt ' + u'⚙️')
+        button7 = KeyboardButton('Về chúng tôi')
 # create KeyboardButton objects for each line
 
         reply_keyboard = [[button1], [button2],
-                          [button3], [button4], [button5]]
+                          [button3], [button4], [button6], [button7], [button5]]
         await update.message.reply_text("Đăng nhập thành công"
                                         "Chào mừng bạn đến với ví điện tử Apotato. Nhập lựa chọn của bạn: ",
                                         reply_markup=ReplyKeyboardMarkup(

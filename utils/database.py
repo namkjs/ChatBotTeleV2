@@ -11,7 +11,9 @@ class dtb:
                      Column('username', String(20)),
                      Column('password', String(255)),
                      Column('balance', Integer, default=0),
-                     Column('salt', String(256))
+                     Column('salt', String(256)),
+                     Column('score', Integer, default=0),
+                     Column('Language', Integer, default=0)
                      )
     # create table
 
@@ -38,6 +40,12 @@ class dtb:
         session = Session()
         result = session.query(self.my_table).filter_by(username=usn).first()
         return result
+
+    def query_language_data(self, usn):
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        result = session.query(self.my_table).filter_by(username=usn).first()
+        return result[6]
 
     def update_data(self, usn, money, bal):
         print(">> check balance truoc", bal)
@@ -71,3 +79,4 @@ class dtb:
 
 
 database = dtb()
+database.Create_Table()
