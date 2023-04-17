@@ -7,6 +7,7 @@ import sys
 import datetime
 from ..variable import *
 from utils.transaction import *
+from models.Keyboard import *
 sys.path.append('...')
 logger = logging.getLogger(__name__)
 
@@ -14,17 +15,6 @@ user_money = int()
 receiver_money = int()
 value = str()
 receiver = str()
-
-button1 = KeyboardButton(
-    'Nạp tiền ' + u'🤑')
-button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
-button3 = KeyboardButton('Chuyển tiền ' + u'📤')
-button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
-button5 = KeyboardButton('Cài đặt ⚙️')
-# create KeyboardButton objects for each line
-
-reply_keyboard_menu = [[button1], [button2],
-                       [button3], [button4], [button5]]
 
 
 async def putmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -45,7 +35,7 @@ async def putmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
             database.update_data(
                 context.user_data["username"], context.user_data["money"], balance)
             await update.message.reply_text("Nạp tiền thành công", reply_markup=ReplyKeyboardMarkup(
-                                            reply_keyboard_menu, resize_keyboard=True,  selective=True
+                                            menu_keyboard(), resize_keyboard=True,  selective=True
                                             ),)
             return user_choice
 
@@ -54,7 +44,7 @@ async def updatemoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     result = database.query_balance_data(context.user_data["username"])
     balance = result[3]
     await update.message.reply_text(f"Số dư tài khoản hiện tại của bạn là: {balance}", reply_markup=ReplyKeyboardMarkup(
-        reply_keyboard_menu, resize_keyboard=True,  selective=True
+        menu_keyboard(), resize_keyboard=True,  selective=True
     ),)
     return user_choice
 
@@ -87,7 +77,7 @@ async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return send_money
     else:
         await update.message.reply_text("Tên người dùng không hợp lệ. Vui lòng thực hiện lại", reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True
+            menu_keyboard(), resize_keyboard=True,  selective=True
         ),)
         return user_choice
 
@@ -106,7 +96,7 @@ async def sendmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return confirmsend
     elif money > balance:
         await update.message.reply_text("Số dư trong tài khoản không khả dụng! Vui lòng nạp thêm tiền và thực hiện lại: ", reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True
+            menu_keyboard(), resize_keyboard=True,  selective=True
         ),)
         return confirmsend
     else:
@@ -136,7 +126,7 @@ async def sendmoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
                           [button3], [button4], [button5]]
         await update.message.reply_text("Chuyển tiền thành công!",
                                         reply_markup=ReplyKeyboardMarkup(
-                                            reply_keyboard_menu, resize_keyboard=True,  selective=True
+                                            menu_keyboard(), resize_keyboard=True,  selective=True
                                         ),
                                         )
         return user_choice
@@ -177,11 +167,11 @@ async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
         language1 = 'Tiếng Việt'
         language2 = 'English'
         keyboard = [[language1], [language2]]
-        await update.message.reply_text("Lựa chọn ngôn ngữ muốn đổi", reply_marku=ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True))
+        await update.message.reply_text("Lựa chọn ngôn ngữ muốn đổi", reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True, selective=True))
         return change_language
     elif (text == 'Quay lại'):
         await update.message.reply_text('Menu: ', reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True, selective=True
+            menu_keyboard(), resize_keyboard=True, selective=True
         ),
         )
         return user_choice
@@ -198,7 +188,7 @@ async def change_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
             break
     database.update_pass(context.user_data['username'], password)
     await update.message.reply_text("Đổi mật khẩu thành công.", reply_markup=ReplyKeyboardMarkup(
-        reply_keyboard_menu, resize_keyboard=True,  selective=True
+        menu_keyboard(), resize_keyboard=True,  selective=True
     ),)
     return user_choice
 
@@ -207,20 +197,20 @@ async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     if (text == 'Thẻ điện thoại'):
         await update.message.reply_text('Bla bla', reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True))
+            menu_keyboard(), resize_keyboard=True,  selective=True))
         return user_choice
     elif (text == 'Mã giảm giá Coffee'):
         await update.message.reply_text("Abc", reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True))
+            menu_keyboard(), resize_keyboard=True,  selective=True))
         return user_choice
     elif (text == 'Mã giảm giá Massage'):
         await update.message.reply_text("Bú", reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True))
+            menu_keyboard(), resize_keyboard=True,  selective=True))
         return user_choice
     elif (text == 'Quay lại'):
         # create KeyboardButton objects for each line
         await update.message.reply_text('Menu: ', reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True
+            menu_keyboard(), resize_keyboard=True,  selective=True
         ),
         )
         return user_choice
@@ -230,9 +220,9 @@ async def changelan(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     if (text == 'Tiếng Việt'):
         await update.message.reply_text("Đổi ngôn ngữ thành công! ", reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True))
+            menu_keyboard(), resize_keyboard=True,  selective=True))
         return user_choice
     elif (text == 'English'):
         await update.message.reply_text('Success', reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard_menu, resize_keyboard=True,  selective=True))
+            menu_keyboard(), resize_keyboard=True,  selective=True))
         return user_choice

@@ -7,6 +7,7 @@ import tracemalloc
 import sys
 
 from .variable import *
+from models.Keyboard import *
 sys.path.append('...')
 logger = logging.getLogger(__name__)
 
@@ -26,25 +27,30 @@ async def success_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
             a = a+1
             break
     if (a == 1):
-        button1 = KeyboardButton(
-            'Nạp tiền ' + u'🤑')
-        button2 = KeyboardButton('Cập nhật số dư ' + u'💳')
-        button3 = KeyboardButton('Chuyển tiền ' + u'📤')
-        button4 = KeyboardButton('Lịch sử giao dịch ' + u'📊')
-        button6 = KeyboardButton('Đổi quà ' + u'🎁')
-        button5 = KeyboardButton('Cài đặt ' + u'⚙️')
-        button7 = KeyboardButton('Về chúng tôi')
-# create KeyboardButton objects for each line
-
-        reply_keyboard = [[button1], [button2],
-                          [button3], [button4], [button6], [button7], [button5]]
         await update.message.reply_text("Đăng nhập thành công"
                                         "Chào mừng bạn đến với ví điện tử Apotato. Nhập lựa chọn của bạn: ",
                                         reply_markup=ReplyKeyboardMarkup(
-                                            reply_keyboard, resize_keyboard=True, one_time_keyboard=True, selective=True
+                                            menu_keyboard(), resize_keyboard=True, selective=True
                                         ),
                                         )
         return user_choice
     else:
         await update.message.reply_text("Sai mat khau! Vui long nhap lai username hoac thuc hien dang ky. Lua chon:")
         return choice
+
+
+async def skip(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Starts the conversation and asks the user about their gender."""
+    button1 = KeyboardButton('Đăng nhập')
+    button2 = KeyboardButton('Đăng ký')
+    button3 = KeyboardButton('Hủy')
+    reply_keyboard = [[button1, button2, button3]]
+    await update.message.reply_text(
+        "Chương trình ví điện tử Appotato. Hãy thêm @Silun để thực hiện các chức năng hấp dẫn cùng Appotato.\n"
+        "Thực hiện lựa chọn: ",
+        reply_markup=ReplyKeyboardMarkup(
+            reply_keyboard, resize_keyboard=True
+        ),
+    )
+
+    return choice
