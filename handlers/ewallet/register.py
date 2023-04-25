@@ -1,6 +1,6 @@
 import random
 import string
-
+import qrcode
 from passlib.hash import bcrypt
 from bot import database
 from utils.transaction import *
@@ -72,4 +72,10 @@ async def sucess_def(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_database = dtb1(str(context.user_data["username"]))
     user_database.create_table()
     await update.message.reply_text("Đăng ký thành công. Nhập lựa chọn: ")
+
+    data = str(context.user_data["username"])
+
+    img = qrcode.make(data)
+
+    img.save(f'public/images/qr/{context.user_data["username"]}.png')
     return choice

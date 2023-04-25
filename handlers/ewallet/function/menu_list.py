@@ -31,12 +31,15 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     elif text in capnhat:
         result = database.query_balance_data(context.user_data["username"])
         balance = result[3]
-        await update.message.reply_text(f"So du tai khoan cua ban hien tai la: {balance}")
+        await update.message.reply_text(f"Số dư tài khoản của bạn là: {balance}")
         return user_choice
     elif text in chuyentien:
-        await update.message.reply_text("Nhap tài khoản muốn chuyển khoản: ")
-
-        return confirmsend
+        button1 = KeyboardButton("Số tài khoản")
+        button2 = KeyboardButton("Mã QR")
+        menu_keyboard2 = [[button1, button2]]
+        await update.message.reply_text("Chọn hình thức nhập: ",  reply_markup=ReplyKeyboardMarkup(
+            menu_keyboard2, resize_keyboard=False, one_time_keyboard=True))
+        return Approach
     elif text in lichsugiaodich:
         user_database = dtb1(str(context.user_data["username"]))
         results = user_database.query_data()
@@ -50,10 +53,10 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         button4 = KeyboardButton('Mã giảm giá Coffee')
         button2 = KeyboardButton('Mã giảm giá Massage')
         button3 = KeyboardButton('Quay lại')
-        menu_keyboard = [[button1], [button4], [button2], [button3]]
+        menu_keyboard1 = [[button1], [button4], [button2], [button3]]
         results = database.query_balance_data(context.user_data["username"])
         await update.message.reply_text(f'Điểm thành viên của bạn là: {results[5]}. Thực hiện đổi điểm: ',  reply_markup=ReplyKeyboardMarkup(
-            menu_keyboard(), resize_keyboard=False, one_time_keyboard=True))
+            menu_keyboard1, resize_keyboard=False, one_time_keyboard=True))
         return score
 
     elif text == 'Cài đặt ⚙️':
@@ -62,7 +65,10 @@ async def select_function(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         button5 = KeyboardButton('Đổi ngôn ngữ')
         button2 = KeyboardButton('Đăng xuất')
         button3 = KeyboardButton('Quay lại')
-        menu_keyboard = [[button4], [button1], [button5], [button3], [button2]]
+        button6 = KeyboardButton('Mã QR')
+        button7 = KeyboardButton('Test QR')
+        menu_keyboard = [[button4], [button1], [
+            button5], [button3], [button2], [button6], [button7]]
         await update.message.reply_text('Thực hiện cài đặt tài khoản. Nhập lựa chọn: ', reply_markup=ReplyKeyboardMarkup(
             menu_keyboard, resize_keyboard=False))
         return setting

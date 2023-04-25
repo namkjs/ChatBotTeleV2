@@ -22,6 +22,8 @@ def ewallet():
             success: [MessageHandler(filters.TEXT & ~filters.COMMAND, sucess_def), CommandHandler("skip", skip)],
             main_menu: [MessageHandler(filters.TEXT & ~filters.COMMAND, mainmenu)],
             user_choice: [MessageHandler(filters.TEXT & ~filters.COMMAND, select_function)],
+            Approach: [MessageHandler(filters.TEXT & ~filters.COMMAND, approach)],
+            confirmsend_photo: [MessageHandler(filters.PHOTO & ~filters.COMMAND, confirm_photo)],
             put_money: [MessageHandler(filters.TEXT & ~filters.COMMAND, putmoney)],
             # update_money: [MessageHandler(filters.TEXT, updatemoney)],
             confirmsend: [MessageHandler(filters.TEXT & ~filters.COMMAND, confirm)],
@@ -31,6 +33,7 @@ def ewallet():
             changepassword: [MessageHandler(filters.TEXT & ~filters.COMMAND, change_password)],
             score: [MessageHandler(filters.TEXT & ~ filters.COMMAND, gift)],
             change_language: [MessageHandler(filters.TEXT & ~ filters.COMMAND, changelan)],
+            qrcode: [MessageHandler(filters.PHOTO, qr)],
         },
         fallbacks=[CommandHandler("Cancel", cancel)],
     )

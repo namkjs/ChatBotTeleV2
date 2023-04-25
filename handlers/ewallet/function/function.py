@@ -8,6 +8,11 @@ import datetime
 from ..variable import *
 from utils.transaction import *
 from models.Keyboard import *
+import glob
+import cv2
+import pandas as pd
+import pathlib
+import os
 sys.path.append('...')
 logger = logging.getLogger(__name__)
 
@@ -49,6 +54,16 @@ async def updatemoney(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return user_choice
 
 
+async def approach(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    temp = update.message.text
+    if temp == 'Số tài khoản':
+        await update.message.reply_text("Nhập số tài khoản muốn chuyển")
+        return confirmsend
+    elif temp == 'Mã QR':
+        await update.message.reply_text("Nhập mã QR: ")
+        return confirmsend_photo
+
+
 async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global receiver
     receiver = update.message.text
@@ -68,6 +83,44 @@ async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
             receiver_money = result[3]
             a = a+1
             break
+    if a > 0:
+        await update.message.reply_text("Nhập số tiền muốn chuyển: ",
+                                        reply_markup=ReplyKeyboardMarkup(
+                                            reply_keyboard, resize_keyboard=True,  selective=True
+                                        ),
+                                        )
+        return send_money
+    else:
+        await update.message.reply_text("Tên người dùng không hợp lệ. Vui lòng thực hiện lại", reply_markup=ReplyKeyboardMarkup(
+            menu_keyboard(), resize_keyboard=True,  selective=True
+        ),)
+        return user_choice
+
+
+async def confirm_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global receiver
+    photo_file = await update.message.photo[-1].get_file()
+    await photo_file.download_to_drive("user_photo.jpg")
+    receiver = str(read_qr_code(update, context))
+    os.remove("user_photo.jpg")
+
+    results = database.query_data()
+    button1 = KeyboardButton('10000')
+    button2 = KeyboardButton('20000')
+    button3 = KeyboardButton('50000')
+    button4 = KeyboardButton('100000')
+    button5 = KeyboardButton('200000')
+    button6 = KeyboardButton('500000')
+    reply_keyboard = [[button1, button2], [
+        button3, button4], [button5, button6]]
+    a = int(0)
+    for result in results:
+        if receiver == result[1]:
+            global receiver_money
+            receiver_money = result[3]
+            a = a+1
+            break
+
     if a > 0:
         await update.message.reply_text("Nhập số tiền muốn chuyển: ",
                                         reply_markup=ReplyKeyboardMarkup(
@@ -175,6 +228,35 @@ async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ),
         )
         return user_choice
+    elif (text == 'Mã QR'):
+        await update.message.reply_text("Mã QR của bạn là: ")
+        photo_file = f'public/images/qr/{context.user_data["username"]}.png'
+        await update.message.reply_photo(photo_file)
+        return user_choice
+    elif (text == 'Test QR'):
+        await update.message.reply_text("Test QR: ")
+        return qrcode
+
+
+def read_qr_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # nparr = np.frombuffer(filename, np.uint8)
+    # convert to image array
+    img = cv2.imread(f'user_photo.jpg')
+
+    detect = cv2.QRCodeDetector()
+    value, points, straight_qrcode = detect.detectAndDecode(img)
+    return value
+
+
+async def qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.message.from_user
+    photo_file = await update.message.photo[-1].get_file()
+    await photo_file.download_to_drive("user_photo.jpg")
+    value = str(read_qr_code(update, context))
+    await update.message.reply_text(value)
+    os.remove("user_photo.jpg")
+    # await update.message.reply_photo(image)
+    return user_choice
 
 
 async def change_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
