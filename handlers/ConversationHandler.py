@@ -13,7 +13,7 @@ def ewallet():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("ewallet", start)],
         states={
-            choice: [MessageHandler(filters.Regex("^(Đăng nhập|Đăng ký|Hủy)$"), register_or_login)],
+            choice: [CallbackQueryHandler(register_or_login)],
             refcode: [MessageHandler(filters.TEXT & ~filters.COMMAND, ref_code)],
             # username_signin: [MessageHandler(filters.TEXT, usern)],
             # password_signin: [MessageHandler(filters.TEXT, password)],

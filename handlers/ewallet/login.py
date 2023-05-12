@@ -22,13 +22,14 @@ async def success_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     logger.info("Password of %s: %s", user.first_name, update.message.text)
     result = database.query_data()
     a = int(0)
+    results = database.query_balance_data(context.user_data["username"])
+    balance = results[3]
     for result in result:
         if (context.user_data["username"] == result[1] and bcrypt.verify(str(result[4] + context.user_data["password"]+result[4]), result[2])):
             a = a+1
             break
     if (a == 1):
-        await update.message.reply_text("Đăng nhập thành công"
-                                        "Chào mừng bạn đến với ví điện tử Apotato. Nhập lựa chọn của bạn: ",
+        await update.message.reply_text(f"💰 Ví của bạn\nSố tài khoản: {context.user_data['username']}\nSố dư: {balance} VND ",
                                         reply_markup=ReplyKeyboardMarkup(
                                             menu_keyboard(), resize_keyboard=True, selective=True
                                         ),
