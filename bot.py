@@ -28,6 +28,8 @@ def main() -> None:
     application = Application.builder().token(os.getenv("API_TELE_KEY")).build()
 
     application.add_handler(handlers.ewallet())
+    application.add_handler(CommandHandler('help', handlers.help))
+    application.add_handler(CommandHandler('aboutus', handlers.aboutus))
     application.run_polling()
 
 

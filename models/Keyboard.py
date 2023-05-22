@@ -24,3 +24,52 @@ def start_keyboard():
     button3 = KeyboardButton('Hủy')
     reply_keyboard = [[button1, button2, button3]]
     return reply_keyboard
+
+
+def keyboard_setting():
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                "🔐 Đổi mật khẩu", callback_data="Đổi mật khẩu"),
+            InlineKeyboardButton(
+                "🌐 Đổi ngôn ngữ", callback_data="Đổi ngôn ngữ"),
+        ],
+        [
+            InlineKeyboardButton(
+                "🔠 Xem số tài khoản | Mã giới thiệu", callback_data="Xem số tài khoản"),
+        ],
+        [
+            InlineKeyboardButton("🔗 Mã QR",
+                                 callback_data="Mã QR"),
+        ],
+        [
+            InlineKeyboardButton("↩️ Quay lại", callback_data="Quay lại"),
+        ],
+        [
+            InlineKeyboardButton("🔒 Đăng xuất", callback_data="Đăng xuất"),
+        ]
+    ]
+    return keyboard
+
+
+def inline_keyboard_menu():
+    keyboard = [
+        [
+            InlineKeyboardButton("➕ Nạp tiền", callback_data="Nạp tiền"),
+            InlineKeyboardButton("💸 Rút tiền", callback_data="Rút tiền"),
+        ],
+        [
+            InlineKeyboardButton("📤 Chuyển tiền", callback_data="Chuyển tiền"),
+        ],
+        [
+            InlineKeyboardButton("📊 Lịch sử giao dịch",
+                                 callback_data="Lịch sử giao dịch"),
+        ],
+        [
+            InlineKeyboardButton("🎁 Đổi quà", callback_data="Đổi quà"),
+        ],
+        [
+            InlineKeyboardButton("⚙️ Cài đặt", callback_data="Cài đặt"),
+        ]
+    ]
+    return keyboard

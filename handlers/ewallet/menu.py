@@ -9,12 +9,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Starts the conversation and asks the user about their gender."""
     keyboard = [
         [
-            InlineKeyboardButton("Đăng nhập", callback_data="Đăng nhập"),
-            InlineKeyboardButton("Đăng ký", callback_data="Đăng ký"),
+            InlineKeyboardButton("🔐 Đăng nhập", callback_data="Đăng nhập"),
+            InlineKeyboardButton("📝 Đăng ký", callback_data="Đăng ký"),
         ],
         [
-            InlineKeyboardButton("Cài đặt", callback_data="Cài đặt"),
-            InlineKeyboardButton("Hỗ trợ", callback_data="Hỗ trợ")
+            InlineKeyboardButton("⚙️ Cài đặt", callback_data="Cài đặt"),
+            InlineKeyboardButton("🤝 Hỗ trợ", callback_data="Hỗ trợ")
         ],
     ]
 
@@ -43,7 +43,7 @@ async def register_or_login(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         return success
     elif update.callback_query.data == "Cài đặt":
         await query.edit_message_text("Đổi ngôn ngữ\n Đổi tiền tệ")
-        return setting
+        return choice
     elif update.callback_query.data == "Hỗ trợ":
         await query.edit_message_text("Tham gia kênh hỗ trợ của chúng tôi để nhận được những lời tư vấn đỉnh cao nhất (https://t.me/+ArWxOYbmSRdmNzA1m)")
         return choice

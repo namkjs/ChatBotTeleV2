@@ -2,6 +2,7 @@ from passlib.hash import bcrypt
 from bot import database
 from telegram.ext import *
 from telegram import *
+from telegram.constants import ParseMode
 import logging
 import tracemalloc
 import sys
@@ -24,16 +25,15 @@ async def success_log(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
     a = int(0)
     results = database.query_balance_data(context.user_data["username"])
     balance = results[3]
+    gift_score = results[5]
     for result in result:
         if (context.user_data["username"] == result[1] and bcrypt.verify(str(result[4] + context.user_data["password"]+result[4]), result[2])):
             a = a+1
             break
     if (a == 1):
-        await update.message.reply_text(f"💰 Ví của bạn\nSố tài khoản: {context.user_data['username']}\nSố dư: {balance} VND ",
-                                        reply_markup=ReplyKeyboardMarkup(
-                                            menu_keyboard(), resize_keyboard=True, selective=True
-                                        ),
-                                        )
+        reply_markup = InlineKeyboardMarkup(inline_keyboard_menu())
+        await update.message.reply_text(text=f"💰 <b>Ví của bạn</b>\n<b>Số tài khoản:</b> {context.user_data['username']}\n<b>Số dư:</b> {balance} VND\n<b>Điểm thành viên:</b> {gift_score} ",
+                                        reply_markup=reply_markup, parse_mode=ParseMode.HTML)
         return user_choice
     else:
         await update.message.reply_text("Sai mat khau! Vui long nhap lai username hoac thuc hien dang ky. Lua chon:")

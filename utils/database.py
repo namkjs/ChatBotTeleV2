@@ -71,11 +71,17 @@ class dtb:
         conn.execute(stmt)
         conn.commit()
 
-    def send(self, usn, rcv, rcv_money, usn_money, money):
+    def send(self, usn, rcv, usn_money, money):
         temp = -int(money)
         print("Check money", money)
-        self.update_data(rcv, money, rcv_money)
         self.update_data(usn, temp, usn_money)
+
+        results = self.query_data()
+        for result in results:
+            if rcv == result[1]:
+                rcv_money = int(result[3])
+                break
+        self.update_data(rcv, money, rcv_money)
 
 
 database = dtb()
