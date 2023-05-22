@@ -71,6 +71,16 @@ class dtb:
         conn.execute(stmt)
         conn.commit()
 
+    def update_lan(self, usn, lan):
+        conn = engine.connect()
+        stmt = (
+            update(self.my_table)
+            .where(self.my_table.c.username == usn)
+            .values(Language=lan)
+        )
+        conn.execute(stmt)
+        conn.commit()
+
     def send(self, usn, rcv, usn_money, money):
         temp = -int(money)
         print("Check money", money)

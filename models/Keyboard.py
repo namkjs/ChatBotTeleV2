@@ -73,3 +73,15 @@ def inline_keyboard_menu():
         ]
     ]
     return keyboard
+
+
+def language_keyboard():
+    keyboard = [
+        [
+            InlineKeyboardButton("Tiếng Việt", callback_data="0"),
+        ],
+        [
+            InlineKeyboardButton("English", callback_data="Chuyển tiền"),
+        ],
+    ]
+    return keyboard

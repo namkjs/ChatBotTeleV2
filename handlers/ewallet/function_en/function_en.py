@@ -25,12 +25,12 @@ receiver = str()
 menu_keyboard = InlineKeyboardMarkup(inline_keyboard_menu())
 
 
-async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def set_up_en(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     if (update.callback_query.data == 'Đổi mật khẩu'):
         await query.edit_message_text('Nhập mật khẩu mới: ')
-        return changepassword
+        return changepassword_en
     elif (update.callback_query.data == 'Đăng xuất'):
         await query.edit_message_text("Đăng xuất thành công. Chúc bạn một ngày vui vẻ")
         return ConversationHandler.END
@@ -40,25 +40,25 @@ async def set_up(update: Update, context: ContextTypes.DEFAULT_TYPE):
         score_gif = results[5]
 
         await query.edit_message_text(f"Số tài khoản của bạn là:{context.user_data['username']}\n<b>💰 Ví của bạn</b>\n<b>Số dư</b>: {balance} VND\n<b>Điểm thành viên:</b> {score_gif} ", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML)
-        return user_choice
+        return user_choice_en
     elif (update.callback_query.data == 'Đổi ngôn ngữ'):
         lan_keyboard = language_keyboard()
         await query.edit_message_text("Lựa chọn ngôn ngữ muốn đổi", reply_markup=lan_keyboard)
-        return change_language
+        return change_language_en
     elif (update.callback_query.data == 'Quay lại'):
         results = database.query_balance_data(context.user_data["username"])
         balance = results[3]
         score_gif = results[5]
         await query.edit_message_text(f"<b>💰 Ví của bạn</b>\n<b>Số tài khoản:</b> {context.user_data['username']}\n<b>Số dư:</b> {balance} VND\n<b>Điểm thành viên: </b>{score_gif} ", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML)
-        return user_choice
+        return user_choice_en
     elif (update.callback_query.data == 'Mã QR'):
         await query.edit_message_text("Mã QR của bạn là: ")
         photo_file = f'public/images/qr/{context.user_data["username"]}.png'
         await query.message.reply_photo(photo_file)
-        return user_choice
+        return user_choice_en
     elif (update.callback_query.data == 'Test QR'):
         await query.edit_message_text("Test QR: ")
-        return qrcode
+        return qrcode_en
 
 
 def read_qr_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -71,7 +71,7 @@ def read_qr_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return value
 
 
-async def qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def qr_en(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
     photo_file = await update.message.photo[-1].get_file()
     await photo_file.download_to_drive("user_photo.jpg")
@@ -79,10 +79,10 @@ async def qr(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(value)
     os.remove("user_photo.jpg")
     # await update.message.reply_photo(image)
-    return user_choice
+    return user_choice_en
 
 
-async def change_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def change_password_en(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     result = database.query_data()
 
@@ -93,31 +93,31 @@ async def change_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
             break
     database.update_pass(context.user_data['username'], password)
     await update.message.reply_text("Đổi mật khẩu thành công.", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML)
-    return user_choice
+    return user_choice_en
 
 
-async def gift(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def gift_en(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     results = database.query_balance_data(context.user_data["username"])
     balance = results[3]
     score_gif = results[5]
     if (text == 'Thẻ điện thoại'):
         await update.message.reply_text(f"Bla bla \n<b>💰 Ví của bạn</b>\n<b>Số tài khoản:</b>{context.user_data['username']}\n<b>Số dư: </b>{balance} VND\nĐ<b>iểm thành viên:</b> {score_gif}", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML)
-        return user_choice
+        return user_choice_en
     elif (text == 'Mã giảm giá Coffee'):
         await update.message.reply_text(f"Abc\n<b>💰 Ví của bạn</b>\n<b>Số tài khoản:</b>{context.user_data['username']}\n<b>Số dư: </b>{balance} VND\nĐ<b>iểm thành viên:</b> {score_gif}", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML)
-        return user_choice
+        return user_choice_en
     elif (text == 'Mã giảm giá Massage'):
         await update.message.reply_text(f"Bú\n<b>💰 Ví của bạn</b>\n<b>Số tài khoản:</b>{context.user_data['username']}\n<b>Số dư: </b>{balance} VND\nĐ<b>iểm thành viên:</b> {score_gif}", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML)
-        return user_choice
+        return user_choice_en
     elif (text == 'Quay lại'):
         # create KeyboardButton objects for each line
         await update.message.reply_text(f"\n<b>💰 Ví của bạn</b>\n<b>Số tài khoản:</b>{context.user_data['username']}\n<b>Số dư: </b>{balance} VND\nĐ<b>iểm thành viên:</b> {score_gif}", reply_markup=menu_keyboard, parse_mode=ParseMode.HTML
                                         )
-        return user_choice
+        return user_choice_en
 
 
-async def changelan(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def changelan_en(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if (update.callback_query.data == 'Tiếng Việt'):
         await update.message.reply_text("Đổi ngôn ngữ thành công! ")
