@@ -1,9 +1,9 @@
 # Telegram eWallet Bot
 ## Overview
-### Welcome to the Telegram eWallet Bot! This bot is designed to provide users with a simple and secure electronic wallet (eWallet) experience within the Telegram messaging platform. With this bot, users can easily manage their funds, make transactions, and keep track of their financial activities.
+  Welcome to the Telegram eWallet Bot! This bot is designed to provide users with a simple and secure electronic wallet (eWallet) experience within the Telegram messaging platform. With this bot, users can easily manage their funds, make transactions, and keep track of their financial activities.
 <img width="375" alt="image" src="https://github.com/namkjs/ChatBotTeleV2/assets/87534374/65ab0055-e732-4da4-b527-ce07c8bf0597">
 
-# Features
+## Features
 1. User-friendly Interface
 The eWallet bot offers an intuitive and user-friendly interface, making it easy for users to navigate and perform various transactions.
 
@@ -21,7 +21,7 @@ Users can view a detailed transaction history, providing transparency and accoun
 
 6. Follow Cryptocurrencies's price and Stock price 
 
-### Getting Started
+## Getting Started
 To use the Telegram eWallet Bot, follow these simple steps:
 
 Start a chat with the bot by searching for "@Silun_bot" on Telegram.
